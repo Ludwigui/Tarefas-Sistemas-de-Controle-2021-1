@@ -5,14 +5,14 @@ clc
 %% Parametros de controle
 
 k_u =    0.56; %ganho da FT Cb/u
-k_caf = 0.46;  %ganho da FT Cb/Caf
-tau_u = 0.49;   %constante de tempo da FT Cb/u
-tau_caf = 0.42; %constante de tempo da FT Cb/Caf
+k_caf = 0.45;  %ganho da FT Cb/Caf
+tau_u = 0.59;   %constante de tempo da FT Cb/u
+tau_caf = 0.59; %constante de tempo da FT Cb/Caf
 
 %parametros de controle
-xi = 0.7; %fator de amortecimento para PICO < 5%
+xi = 1; %fator de amortecimento para sistema SEM PICO
 t_cinco = 1.6; %tempo de 5% de malha fechada
-wn = 3/(xi*t_cinco); %frequencia natural
+wn = 4.8/(xi*t_cinco); %frequencia natural
 
 %Para alpha grande --> sobressinal maior, mais rapido p/ entrar em regime
 %Para alpha pequeno--> sobressinal menor, mais lento p/ entrar em regime
@@ -22,7 +22,7 @@ wn = 3/(xi*t_cinco); %frequencia natural
 
 s = tf([1 0],[1]); % variavel de Laplace
 
-den_desejado = s^2 +2*xi*wn*s + wn^2;
+den_desejado = s^2 +2*xi*wn*s + wn^2; %s^2  + 3s + 9 --> eh o ideal
 
 %FT de G(s) = Cb(s)/u(s)
 G = k_u/(1+s*tau_u);
@@ -33,8 +33,8 @@ Qi = k_caf/(1+s*tau_caf);
 [num_Qi,den_Qi] = tfdata(Qi);
 
 %parametros do controlador
-Kc = 1.48;
-Ti = 0.237;
+Kc = 4.5364;
+Ti = 0.478;
 
 %FT do controlador C(s) 
 C = (Kc*(1+s*Ti))/(s*Ti);
@@ -42,20 +42,21 @@ C = (Kc*(1+s*Ti))/(s*Ti);
 
 %FT do filtro F(s) sem cancelamento
 %F = (1+s*Ti*alpha)/(1 + s*Ti);
-F = 1/( 1 + (1/4.219)*s);
-[num_F,den_F] = tfdata(F);
+%F = 1/( 1 + (1/4.219)*s);
+%[num_F,den_F] = tfdata(F);
 
 %%  FTs de Malha Fechada para Controlador Sem Cancelamento
 
 %FT de Y/R -->  Cb/Ref
 Hr=  (C*G)/(1 + C*G);
 [num_Hr,den_Hr] = tfdata(Hr);
-Hr = minreal(Hr);
+Hr = minreal(Hr);                     %calculo do Matlab nao da 2 polos reais distintos, pois fica uma 
+                                                 %pequena parte imaginaria que nao era pra existir. 
 
 %FT de Y/R --> Cb/R com filtro
-  Hrf=  (C*G*F)/(1 + C*G);
-  [num_Hrf, den_Hrf] = tfdata(Hrf);
-  Hrf = minreal(Hrf);
+%   Hrf=  (C*G*F)/(1 + C*G);
+%   [num_Hrf, den_Hrf] = tfdata(Hrf);
+%   Hrf = minreal(Hrf);
 
 %FT de Y/Q --> Cb/Caf
 Hq = (Qi)/(1+(G*C));
@@ -68,9 +69,9 @@ Hq = minreal(Hq);
  Hur = minreal(Hur);
 
 %FT de U/R  --> u/Ref com filtro
- Hurf = (C*F)/(1+(G*C)); 
- [num_Hurf,den_Hurf] = tfdata(Hurf);
- Hurf = minreal(Hurf);
+%  Hurf = (C*F)/(1+(G*C)); 
+%  [num_Hurf,den_Hurf] = tfdata(Hurf);
+%  Hurf = minreal(Hurf);
 
 %FT de U/Q --> u/Caf
 Huq = (-C*Qi)/(1+(G*C));
@@ -81,7 +82,7 @@ Huq = minreal(Huq);
 %% Verificando os polos e os zeros das  FTs
 
 %consulta direta dos parametros e respostas da FT
-funcaoTransf(Hq)
+funcaoTransf(Hr)
 
 
 % Simulação
