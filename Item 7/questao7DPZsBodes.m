@@ -33,7 +33,7 @@ Qi = k_caf/(1+s*tau_caf);
 [num_Qi,den_Qi] = tfdata(Qi);
 
 %parametros do controlador
-Kc = 4.5364;
+Kc = 4.53;
 Ti = 0.478;
 
 %FT do controlador C(s) 
@@ -50,7 +50,7 @@ C = (Kc*(1+s*Ti))/(s*Ti);
 %FT de Y/R -->  Cb/Ref
 Hr=  (C*G)/(1 + C*G);
 [num_Hr,den_Hr] = tfdata(Hr);
-Hr = minreal(Hr);                     %calculo do Matlab nao da 2 polos reais distintos, pois fica uma 
+%Hr = minreal(Hr);                     %calculo do Matlab nao da 2 polos reais distintos, pois fica uma 
                                                  %pequena parte imaginaria que nao era pra existir. 
 
 %FT de Y/R --> Cb/R com filtro
@@ -92,6 +92,9 @@ funcaoTransf(Hr)
 
 %resultadosQ7
 
+plot(data2(:,1), data2(:,2))
+legend('C_{B} [mol/L]')
+xlabel('Tempo [min]')
 
 %% Funcoes adicionais
 

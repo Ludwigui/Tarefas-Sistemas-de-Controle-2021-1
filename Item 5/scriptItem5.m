@@ -9,6 +9,7 @@ CaEq = 0.7192;
 CbEq = 2.345;
 uEq = 1;
 CafEq = 5.1;
+%%
 sim('DiagramaDeSimulacaoItem5')
 
 
