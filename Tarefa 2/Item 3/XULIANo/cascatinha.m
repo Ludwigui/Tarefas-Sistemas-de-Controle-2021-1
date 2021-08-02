@@ -140,7 +140,8 @@ title('DPZ da FT de MF Y/R')
 %% Projeto do Filtro 
 
 %FT do filtro de referência
-F = 1/(1+(1/3.049)*s); %zero é o zero que está "incomodando a resposta"
+%F = 1/(1+(1/3.049)*s); %zero é o zero que está "incomodando a resposta"
+F = 1/((1+(1/3.049)*s)^2);
 [num_F,den_F] = tfdata(F);
 
 %filtro nao afeta em nada a resposta a perturbacao!!!!!!!
