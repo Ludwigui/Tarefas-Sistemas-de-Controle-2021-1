@@ -40,7 +40,8 @@ sd_imNegativo = -fa*wn - 1i*wn*sqrt(1-fa^2);   %parte real negativa
 
 %% Calculando contribuicoes dos polos e zeros do den da FT de malha fechada
 
-sd = -fa*wn  + 1i*wn*sqrt(1-fa^2); 
+sd = -fa*wn  + 1i*wn*sqrt(1-fa^2);
+
 
 zero1 = 6.592;
 zero2 = 34.29;
@@ -140,8 +141,8 @@ title('DPZ da FT de MF Y/R')
 %% Projeto do Filtro 
 
 %FT do filtro de referência
-%F = 1/(1+(1/3.049)*s); %zero é o zero que está "incomodando a resposta"
-F = 1/((1+(1/3.049)*s)^2);
+F = 1/(1+(1/3.049)*s); %zero é o zero que está "incomodando a resposta"
+%F = 1/((1+(1/3.049)*s)^2);
 [num_F,den_F] = tfdata(F);
 
 %filtro nao afeta em nada a resposta a perturbacao!!!!!!!
