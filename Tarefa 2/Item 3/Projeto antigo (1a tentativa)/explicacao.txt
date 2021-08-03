@@ -1,0 +1,5 @@
+Projeto feito usando um modelo para a Malha externa 
+Sugestão do monitor Victor*
+
+Códigos para simulação: cascatinha e MalhaInterna
+Simulink: EsquemaCascata.slx

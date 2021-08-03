@@ -25,3 +25,29 @@ legend('Perto do ponto de operação', 'Longe do ponto de operação')
 xlabel('Tempo [min]')
 ylabel('Concentracao Produto B [mol/L]')
 title('Resposta dinamica para a Cb no modelo Não Linear')
+
+figure
+set(gcf,'OuterPosition',[1 offHeight figWidth figHeight]);
+set(gcf,'name','Resposta MF')
+plot(y1.Time, y1.Data, '-b')
+hold on
+plot(yantes.Time,yantes.Data, '- r')
+hold on
+%axis([0 121 0 4])
+legend('Cb com PID Tarefa 2', 'Cb com PI Tarefa1')
+xlabel('Tempo [min]')
+ylabel('Concentracao Produto B [mol/L]')
+title('Resposta dinamica para a Cb')
+
+figure
+set(gcf,'OuterPosition',[1 offHeight figWidth figHeight]);
+set(gcf,'name','Resposta MF')
+plot(y2.Time, y2.Data, '-b')
+hold on
+plot(yantes.Time,yantes.Data, '- r')
+hold on
+%axis([0 121 0 4])
+legend('Cb com PID Tarefa 2', 'Cb com PI Tarefa1')
+xlabel('Tempo [min]')
+ylabel('Concentracao Produto B [mol/L]')
+title('Resposta dinamica para a Cb')

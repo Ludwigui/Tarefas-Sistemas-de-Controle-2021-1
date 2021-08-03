@@ -28,16 +28,16 @@ sd_imNegativo = -fa*wn -  1i*wn*sqrt(1-fa^2);  %parte real negativa
 
  sd = -fa*wn  + 1i*wn*sqrt(1-fa^2); 
 
-
+ fase1 = 180 - rad2deg(double(atan( abs(imag(sd))/(-1*real(sd)+5.55))));   
  fase2 = 180 - rad2deg(double(atan( abs(imag(sd))/(-1*real(sd))))); %polo Controlador na origem
  fase3 = 180 - rad2deg(double(atan( abs(imag(sd))/(- 1*real(sd)-1.6433)))); %polo em 1.6433
- fase1 = 180 - rad2deg(double(atan( abs(imag(sd))/(- 1*real(sd)+5.55)))); %zero em 5.55
 
 
 
 
 
-faseConhecida = fase1 -(fase2+fase3) ;
+
+faseConhecida = fase1-(fase2+fase3) ;
 
 faseTotal = 0;
 
@@ -59,10 +59,9 @@ Kc = real(Kc_pos);
 
 %% Funcoes de transferencia contínuas
 s = tf([1 0],[1]); % variavel de Laplace
-Pext = (2.667-0.48*s)/(s+1.6433);
-C = 0.7288*(s+2.812)/s;
-F = 2.81/(s+2.81); 
-Gmf = C*Pext*F/(1+C*Pext);
+Pext = -0.48*(s-5.55)/(s+1.6433);
+C = 0.7288*(s+2.812)/s; 
+Gmf = C*Pext/(1+C*Pext);
 step(Gmf)
 
 

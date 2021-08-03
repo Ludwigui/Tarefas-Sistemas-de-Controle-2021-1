@@ -86,10 +86,6 @@ Kc_pos = double(vpa(solve(((1 + Num/Den == 0)))));
 s = sd_imNegativo;
 Kc_neg = double(vpa(solve((1+ Num/Den == 0))));
 
-%Num = (((s+zero)^2)*(-2.1699*s + 12.01873))
-%Den  =  s*(s+6.9433)*(s+1.6433)*(s+paf)
-%KLR = -Den/Num
-
 Kc = real(Kc_pos);
 
 %% Funcoes de transferencia contínuas 

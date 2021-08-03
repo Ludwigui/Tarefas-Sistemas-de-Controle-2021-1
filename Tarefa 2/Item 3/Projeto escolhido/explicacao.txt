@@ -1,0 +1,7 @@
+Esse foi o projeto escolhido no final das contas, pois foi o unico onde o LR passou exatamente pelo sd.
+
+Aqui, foram feitas manipulações com os blocos da FT para poder achar um modelo para usar no projeto do controlador externo.
+
+Códigos dos controladores de Malha INterna e externa separados;
+
+Simulink: USAResseCascata.slx
