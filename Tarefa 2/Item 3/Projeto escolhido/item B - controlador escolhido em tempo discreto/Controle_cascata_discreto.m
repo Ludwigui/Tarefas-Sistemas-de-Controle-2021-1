@@ -25,7 +25,7 @@ Ca = [0 0];
 Cb = [0 0];
 t = [0 Tc];
 ref_in(1) = 0;
-ref(1) = 0;
+ref_out(1) = 0;
 j=0;
 l=0;
 
@@ -34,21 +34,23 @@ for k=2:30000
     if (k<10001)
         ref_in(k)=ref_in(k-1)+0.0002345;
     end
-    %%Filtro de referência da malha externa
-    ref(k)=0.8098*ref(k-1)+0.1902*ref_in(k);
-    
+        
     if (((k-j)/100)==1) %Realização da amostragem
         j=k;
         
+        %%Filtro de referência da malha externa
+        ref_out(k)=0.8098*ref_out(k-1)+0.1902*ref_in(k);
+        
         %cálculo do erro da malha externa
-        e_ext(k) = ref(k) - Cb(k); 
+        e_ext(k) = ref_out(k) - Cb(k); 
     
         %lei de controle da malha externa
-        u_ext(k) = u_ext(k-1) + 0.708*e_ext(k) - 0.574*e_ext(k-1);
+        u_ext(k) = u_ext(k-1) + 0.6018*e_ext(k) - 0.4813*e_ext(k-1);
             
     else  %Atualização dos valores quando não há amostragem
         u_ext(k)= u_ext(k-1);
         e_ext(k)= e_ext(k-1);
+        ref_out(k)=ref_out(k-1);
     end
             
     if (((k-l)/10)==1) %Realização da amostragem
@@ -78,11 +80,11 @@ for k=2:30000
     t(k+1) = t(k)+Tc;
 
 
-   %Aplicação de um degrau de perturbação e de referência
-    if (k==14999)
+    %Aplicação de um degrau de perturbação e de referência
+    if (k==15999)
         Caf(k+1) = Caf(k) + 0.2;
     end
-    if (k==22499)
+    if (k==21999)
         ref_in(k+1) = ref_in(k) + 0.1;
     end
         
@@ -108,7 +110,7 @@ ylabel('Caf')
 figure
 set(gcf,'name','Gráfico de concentração de B')
 title('Processo completo')
-plot(t,ref)
+plot(t,ref_out)
 hold on
 plot(t,Cb)
 grid on
