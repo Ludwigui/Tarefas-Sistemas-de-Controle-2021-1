@@ -39,37 +39,37 @@ zd_mod = exp(-fa*wn*Tsin);   %modulo do numero complexo zd
 zd_imPositivo = zd_mod + 1i*zd_fase;  %parte real positiva
 zd_imNegativo = zd_mod - 1i*zd_fase;  %parte real negativa
 
+zd =  zd_mod + 1i*zd_fase;
+
 %% Discretizando as FTs ja conhecidas
 Gi_d =  c2d( tf([N],[D]),Tsin, 'zoh');
 Gr_d = c2d( tf([N],[D]),Tsin, 'zoh');
 
 %% Calculando contribuicoes dos polos e zeros do den da FT de malha fechada
 
-zd =  zd_mod + 1i*zd_fase;
-
 %zeros e  polos do LR (apos colocar na  forma monica)
 zeroNum = ;
-polo1 = ;
+polo1 = 1;
 polo2 = ;
 polo3 = ;
 
 fase1 = 180 - rad2deg(double(atan( abs(imag(zd))/(zeroNum -1*real(zd))))); 
 fase2 = 180 - rad2deg(double(atan( abs(imag(zd))/(polo1 - 1*real(zd))))); 
-fase3 = rad2deg(double(atan( abs(imag(zd))/(real(zd) - polo2 )))); 
+fase3 = 180 - rad2deg(double(atan( abs(imag(zd))/(polo2 - 1*real(zd))))); 
 fase4 = rad2deg(double(atan( abs(imag(zd))/(real(zd)-  polo3)))); 
 
 faseConhecida = fase1 - (fase2 + fase3 + fase4);
 
 faseTotal = 0; %se  K<0
-faseTotal = -180; %se K>0
+faseTotal = -180; %se  K>0
 
 syms faseDesconhecida
 faseDesconhecida = vpa(solve(faseTotal == faseConhecida + faseDesconhecida));
 
-paf = abs(sd)^10;
+paf = abs(zd)^10;
 
 %calculando a fase do paf
-fase_paf = rad2deg(double(atan( abs(imag(sd))/(paf + real(sd))))); 
+fase_paf = rad2deg(double(atan( abs(imag(zd))/(real(zd) - paf)))); 
 
 %recalculando a fase total desonhecida:
 faseDesconhecidaNova = fase_paf + faseDesconhecida;
@@ -79,10 +79,10 @@ faseDesconhecidaNova = fase_paf + faseDesconhecida;
 
 %zeros SEMPRE a esquerda da localizacao do sd para nao afetar a dominancia
 % Calculando a localizacao do zero do controlador:
-zero = double( -1*real(sd) +  (imag(sd))/tan(deg2rad(double( (faseDesconhecidaNova/2)))));
+zero = real(zd) - double((imag(zd))/tan(deg2rad(double( (faseDesconhecidaNova/2))))) ;
 
 %Prova real
-fasePROVAreal = rad2deg(double(atan( abs(imag(sd))/(zero + real(sd)))));
+fasePROVAreal = rad2deg(double(atan( abs(imag(zd))/(real(zd) - zero))));
 
 %% Calculando K
 syms K
