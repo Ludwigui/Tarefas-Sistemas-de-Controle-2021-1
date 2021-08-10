@@ -23,6 +23,9 @@ wn = vpa(solve(t_5 == (3/(fa*wn))));    %para 0 < Xi <= 0.7
 wn = vpa(solve(t_5 == (4.8/(fa*wn)))); %para 0.8 <= Xi <= 1
 wn = vpa(solve(t_5 == 1.5*tau_rapido + 3*tau_lento)); %para 0.8 > Xi > 1
 
+%frequencia amortecida
+wd = wn*sqrt(1-fa^2);
+
 %ponto desejado
 sd_imPositivo =  -fa*wn  + 1i*wn*sqrt(1-fa^2);  %parte real positiva
 sd_imNegativo = -fa*wn - 1i*wn*sqrt(1-fa^2);   %parte real negativa
