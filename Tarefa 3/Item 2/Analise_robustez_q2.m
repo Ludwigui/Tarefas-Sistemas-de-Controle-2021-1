@@ -63,3 +63,24 @@ end
 bodemag(Gn,'k--')
 legend('P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'Pn')
 title('Funções de Transferência')
+
+%% Para erros de modelagem do atraso
+
+Gnat=(tf([-2.1699 12.01873], conv([1 6.9433],[1 1.6433]))*exp(-3*s));
+
+for i=1:5
+    Cbat(i)=Gn*exp((-0.06*i-3)*s);
+end
+
+for i=1:5
+    deltaPiat(i)=((Cbat(i)-Gnat)/Gn);
+end
+
+figure
+for i=1:5
+    bodemag(deltaPiat(i))
+    hold on
+end
+bodemag(invHr,'k--')
+legend('delta P1', 'delta P2', 'delta P3', 'delta P4', 'delta P5', '1/Hr')
+title('Análise de Robustez para erro de modelagem no atraso')
