@@ -46,16 +46,16 @@ syms alpha beta gamma
 
 %calculando alpha
 z = 0.5941;
-NumColchete = ((z^40)*((z-0.4)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
+NumColchete = ((z^40)*((z-0.61)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
 d = 4; %precisao 
 valor_alpha = vpa(solve((NumColchete == 0), alpha));
 % calculando beta 
 z = 0.884;
-NumColchete2 = ((z^40)*((z-0.4)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
+NumColchete2 = ((z^40)*((z-0.61)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
 valor_beta = vpa(solve( (NumColchete2 == 0), beta));
 % calculando gamma
 z = 1;
-NumColchete3 = ((z^40)*((z-0.4)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
+NumColchete3 = ((z^40)*((z-0.61)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
 valor_gamma = vpa(solve((NumColchete3 == 0), gamma));
 
 %% resolvendo sistema

@@ -99,7 +99,7 @@ Ceq = NumCeq/DenCeq;     %minreal((C_d*Fr)/(1+ C_d*Gu_d*(1- (Fr*(z^-40)))));
 
 %Gerando graficos da questao 2
 %sim('PSFsimu')
-('testeCeq')
+sim('testeCeq')
 screenSize = get(0,'screensize'); % gets screen size
 monWidth = screenSize(3);
 monHeight = screenSize(4);

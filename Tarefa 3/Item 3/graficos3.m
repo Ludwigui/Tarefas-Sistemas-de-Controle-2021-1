@@ -18,13 +18,37 @@ set(gcf,'OuterPosition',[1 offHeight figWidth figHeight]);
 set(gcf,'name','Resposta MF')
 plot(sp.Time,sp.Data, '- r')
 hold on
+plot(sp1.Time,sp1.Data, '- g')
+hold on
 plot(pv.Time, pv.Data, '-b')
 hold on
 plot(pv2.Time, pv2.Data, '-k')
-%hold on
-%plot(pert.Time,pert.Data)
+hold on
+%plot(pert.Time,pert.Data, 'y')
 %axis([0 121 0 4])
-legend('SP', 'PV perto', 'PV longe')
+legend('SP perto', 'SP longe',  'PV perto', 'PV longe')
 xlabel('Tempo [min]')
-ylabel('Concentracao Produto B [mol/L]')
+ylabel('Concentracao  [mol/L]')
 title('Resposta Cb com variacao perto e longe do ponto de operacao')
+
+
+figure
+set(gcf,'OuterPosition',[1 offHeight figWidth figHeight]);
+set(gcf,'name','Resposta MF')
+plot(pert.Time,pert.Data, 'y')
+%axis([0 121 0 4])
+legend('perturbacao')
+xlabel('Tempo [min]')
+ylabel('Concentracao  [mol/L]')
+title('Sinal de perturbacao')
+
+figure
+set(gcf,'OuterPosition',[1 offHeight figWidth figHeight]);
+set(gcf,'name','Resposta MF')
+plot(uDin.Time,uDin.Data, '- r')
+hold on
+plot(uDin1.Time,uDin1.Data, '- g')
+legend('MV perto', 'MV longe')
+xlabel('Tempo [min]')
+ylabel('Sinal de controle [u]')
+title('Sinal de controle com variacao perto e longe do ponto de operacao')
