@@ -9,7 +9,7 @@ s = tf('s');
 % Funcoes de transferencia entre PV, MV e Perturbacao
 Gq = tf([0 4.808], conv([1 6.9433],[1 1.6433])); %expressao da FT perturbacao
 Gu    = tf([-2.1699 12.01873], conv([1 6.9433],[1 1.6433]));  %expressao da planta sem atraso
-C =(6.6534*((s+3.879)^2))/(s*(s+28.98)); % controlador primario
+C =(6.6534*((s+3.879)^2))/(s*(s+29)); % controlador primario
 F =  1/(((1/3.879)*s + 1)^2); %filtro de referencias
 %% Discretizando
 t_5 = 1.5;
@@ -34,7 +34,7 @@ Hsf=  zpk(minreal((C_d*Gu_d)/(1+C_d*Gu_d),1e-2)*(z^-40));
 
 %Hrc = (C*Gu*F)/(1+C*Gu);
 %figure
-%step(Hr)
+%step(Hsf)
 %hold
 %step(Hrc)
 
@@ -45,17 +45,17 @@ Hqsf = zpk(minreal(((Gq_d)*(z^-40))*(1 - Hsf)));
 syms alpha beta gamma
 
 %calculando alpha
-z =0.884;
-NumColchete = ((z^40)*((z-0.678)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
+z = 0.5941;
+NumColchete = ((z^40)*((z-0.4)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
 d = 4; %precisao 
 valor_alpha = vpa(solve((NumColchete == 0), alpha));
 % calculando beta 
-z = 0.5941;
-NumColchete2 =  ((z^40)*((z-0.678)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
+z = 0.884;
+NumColchete2 = ((z^40)*((z-0.4)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
 valor_beta = vpa(solve( (NumColchete2 == 0), beta));
 % calculando gamma
 z = 1;
-NumColchete3 = ((z^40)*((z-0.678)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
+NumColchete3 = ((z^40)*((z-0.4)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
 valor_gamma = vpa(solve((NumColchete3 == 0), gamma));
 
 %% resolvendo sistema
@@ -73,8 +73,8 @@ gamma = double(vpa(sol.gamma))
 %% Testando filtro
 z = tf('z')
 NumFr = ((alpha)*(z^2) + (beta*z) + gamma)*(z^2 - 1.682*z + 0.7312)*(z^2 - 1.239*z + 0.4697);
-DenFr   = ((z-0.678)^4)*((z-0.7476)^2);
-Fr =  minreal((NumFr/DenFr),1e-2);
+DenFr   = ((z-0.61)^4)*((z-0.7476)^2);
+Fr =  minreal(NumFr/DenFr)
 Hq = zpk(minreal(((Gq_d)*(z^-40))*(1 - Hsf*Fr)));
 [num_Hq,den_Hq] = tfdata(Hq);
 
@@ -85,21 +85,20 @@ legend('Sem filtro', 'com filtro')
 
 %% 
 
-Fn =F_d/Fr;
+Fn =1/Fr;
+%Ceq = minreal((C_d*Fn)/(1+ C_d*Gu_d*(1- (Fn*(z^-40)))), 1e-2);
+NumCeq =   0.23469*(z^40)*(z-0.8647)*(z-0.7986)*(z-0.5939);
+DenCeq =  (z+0.8856)*(z-1)*(z-0.772)*(z^2 - 1.987*z + 1.002)*(z^2 + 1.75*z + 0.7844)*(z^2 - 1.936*z + 0.9963)*(z^2 + 1.686*z + 0.7851)*(z^2 - 1.835*z + 0.9715)*(z^2 + 1.581*z + 0.7862)*(z^2 - 1.697*z + 0.9446)*(z^2 + 1.438*z + 0.7878)* (z^2 - 1.523*z + 0.9167)*(z^2 + 1.259*z + 0.7899)*(z^2 - 1.317*z + 0.8892)* (z^2 + 1.05*z + 0.7927)*(z^2 - 1.083*z + 0.8655)*(z^2 + 0.8141*z + 0.7962)*          (z^2 - 0.8281*z + 0.8469)*(z^2 + 0.5575*z + 0.8005)*(z^2 - 0.5579*z + 0.8325)*(z^2 + 0.2858*z + 0.806)*(z^2 - 0.2781*z + 0.8214)*(z^2 + 0.005173*z + 0.8128);
 
-NumCeq = 4.6002*z^40*(z-0.8838)*(z-0.884)*((z-0.7476)^2)*(z-0.5941)*(z^2 - 1.682*z + 0.7312);
-DenCeq  =  (z+0.9781)*(z-1)*(z-0.884)*(z-0.7476)*(z-0.7475)*(z^2 - 1.991*z + 1.011)*(z^2 + 1.933*z + 0.9568)*(z^2 - 1.682*z + 0.7312)*(z^2 - 1.941*z + 1.016)*(z^2 + 1.865*z + 0.9572)*(z^2 - 1.845*z + 1.014)*(z^2 + 1.753*z + 0.9579)*(z^2 - 1.706*z + 1.008)*(z^2 + 1.599*z + 0.9588)*(z^2 - 1.53*z + 1.002)*(z^2 + 1.408*z + 0.9601)*(z^2 - 1.318*z + 0.9952)*(z^2 + 1.184*z + 0.9617)*(z^2 - 1.077*z + 0.9893)*(z^2 + 0.9317*z + 0.9636)*(z^2 - 0.8116*z + 0.984)*(z^2 + 0.6575*z + 0.9659)*(z^2 - 0.5276*z + 0.9793)*(z^2 + 0.3676*z + 0.9686)*(z^2 - 0.2319*z + 0.9752)*(z^2 + 0.06884*z + 0.9717);                           
-                   
-Ceq = NumCeq/DenCeq;     %minreal((C_d*Fr)/(1+ C_d*Gu_d*(1- (Fr*(z^-40)))));
+Ceq = NumCeq/DenCeq;
 
-%X = minreal(Ceq/((z-0.8838)*(z-0.884)*(z-0.5941)*(z^2 - 1.495*z + 0.5589)*(z^2 - 1.682*z + 0.7312)))
-
-
+          
 %% Configuraçao janela
 
 %Gerando graficos da questao 2
-%sim('PSFsimu')
-('testeCeq')
+%sim('testeCeq')
+sim('PSFsimu')
+
 screenSize = get(0,'screensize'); % gets screen size
 monWidth = screenSize(3);
 monHeight = screenSize(4);
@@ -123,5 +122,4 @@ legend('SP', 'PV', 'pert')
 xlabel('Tempo [min]')
 ylabel('Concentracao Produto B [mol/L]')
 title('Resposta dinamica para a Cb com Ceq')
-
  
