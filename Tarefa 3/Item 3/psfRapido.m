@@ -46,16 +46,16 @@ syms alpha beta gamma
 
 %calculando alpha
 z = 0.5941;
-NumColchete = ((z^40)*((z-0.4)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
+NumColchete = ((z^40)*((z-0.61)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
 d = 4; %precisao 
 valor_alpha = vpa(solve((NumColchete == 0), alpha));
 % calculando beta 
 z = 0.884;
-NumColchete2 = ((z^40)*((z-0.4)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
+NumColchete2 = ((z^40)*((z-0.61)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
 valor_beta = vpa(solve( (NumColchete2 == 0), beta));
 % calculando gamma
 z = 1;
-NumColchete3 = ((z^40)*((z-0.4)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
+NumColchete3 = ((z^40)*((z-0.61)^4)) + (0.32895*(z-1.543)*(alpha*(z^2)+(beta*z)+gamma));
 valor_gamma = vpa(solve((NumColchete3 == 0), gamma));
 
 %% resolvendo sistema
@@ -71,7 +71,7 @@ beta = double(vpa(sol.beta))
 gamma = double(vpa(sol.gamma))
 
 %% Testando filtro
-z = tf('z')
+z = tf('z',Ts)
 NumFr = ((alpha)*(z^2) + (beta*z) + gamma)*(z^2 - 1.682*z + 0.7312)*(z^2 - 1.239*z + 0.4697);
 DenFr   = ((z-0.61)^4)*((z-0.7476)^2);
 Fr =  minreal(NumFr/DenFr)
@@ -84,6 +84,18 @@ step(Hq)
 legend('Sem filtro', 'com filtro')
 
 %% 
+
+sim('item3ModeloNLinPS')
+figure
+plot(dados(:,1), dados(:,2))
+hold on
+plot(dados(:,1), dados(:,3))
+hold on
+plot(dados(:,1), dados(:,4))
+legend('PV','SP','Sinal de controle [l/min]')
+xlabel('Tempo [min]')
+ylabel('Concentração [mol/L]')
+
 
 Fn =1/Fr;
 %Ceq = minreal((C_d*Fn)/(1+ C_d*Gu_d*(1- (Fn*(z^-40)))), 1e-2);

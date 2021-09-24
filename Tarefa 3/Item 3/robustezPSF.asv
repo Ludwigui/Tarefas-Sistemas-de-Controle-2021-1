@@ -45,7 +45,7 @@ Gn=(tf([-2.1699 12.01873], conv([1 6.9433],[1 1.6433])));
 C = 6.65 * tf(conv([1 3.879],[1 3.879]),conv([1 0],[1 29]));
 Fs = d2c(Fr,'matched')
 %Hr
-Hr=((C*Gn)/(1+C*Gn))*Fs; 
+Hr=((C*Gn)/(1+C*Gn)*(1/Fs)); 
 
 %delta para cada função do grupo de FTs calculadas
 for i=1:7
@@ -89,9 +89,9 @@ end
 
 figure
 for i=1:5
-    bodemag(deltaPiat(i))
+    bodemag(1/deltaPiat(i))
     hold on
 end
-bodemag(1/Hr,'k--')
+bodemag(invHr,'k--')
 legend('delta P1', 'delta P2', 'delta P3', 'delta P4', 'delta P5', '1/Hr')
 title('Análise de Robustez para erro de modelagem no atraso')

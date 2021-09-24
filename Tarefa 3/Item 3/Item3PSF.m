@@ -83,6 +83,8 @@ hold on
 step(Hq)
 legend('Sem filtro', 'com filtro')
 
+
+
 %% 
 
 Fn =F_d/Fr;
