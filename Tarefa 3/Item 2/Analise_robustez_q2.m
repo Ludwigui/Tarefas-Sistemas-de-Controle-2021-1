@@ -50,7 +50,7 @@ end
 bodemag(invHr,'m--')
 
 legend('delta P1', 'delta P2', 'delta P3', 'delta P4', 'delta P5', 'delta P6', 'delta P7', '1/Hr')
-title('Análise de Robustez para erro de tau e Ke')
+title('Análise de Robustez para erros de modelagem de tau e Ke')
 
 
 
@@ -84,3 +84,24 @@ end
 bodemag(invHr,'k--')
 legend('delta P1', 'delta P2', 'delta P3', 'delta P4', 'delta P5', '1/Hr')
 title('Análise de Robustez para erro de modelagem no atraso')
+
+%% Para erros de modelagem do atraso, tau e Ke
+
+erro=0.04;
+
+for i=1:7
+    Cbatt(i)=Cbs(i)*exp((-3*erro-3)*s);
+end
+
+for i=1:7
+    deltaPiat(i)=((Cbatt(i)-Gnat)/Gn);
+end
+
+figure
+for i=1:7
+    bodemag(deltaPiat(i))
+    hold on
+end
+bodemag(invHr,'k--')
+legend('delta P1', 'delta P2', 'delta P3', 'delta P4', 'delta P5', '1/Hr')
+title('Análise de Robustez para erro de modelagem no atraso, tau e Ke')
